@@ -1,0 +1,440 @@
+html {
+    box-sizing: border-box;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: inherit;
+}
+
+html,
+body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background: #ffffff  url('../img/geometry2.png'); /* Background pattern from Subtle Patterns */
+    font-family: 'Coda', cursive;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+h1 {
+    font-family: 'Slackey', cursive;
+    font-weight: 400;
+    text-shadow: 2px 2px 22px rgba(105, 201, 125, 1);
+    color: #00A486;
+}
+
+/*
+ * Styles for the deck of cards
+ */
+
+.deck {
+    width: 660px;
+    min-height: 680px;
+    background: linear-gradient(160deg, #02ccba 0%, #aa7ecd 100%);
+    padding: 32px;
+    border-radius: 10px;
+    box-shadow: 12px 15px 20px 0 rgba(46, 61, 73, 0.5);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0 0 3em;
+}
+
+.deck .card {
+    height: 125px;
+    width: 125px;
+    background: #2e3d49;
+    font-size: 0;
+    color: #ffffff;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 5px 2px 20px 0 rgba(46, 61, 73, 0.5);
+}
+
+.deck .card.open {
+    transform: rotateY(0);
+    background: #02b3e4;
+    cursor: default;
+    animation-name: fadeIn;
+    animation-duration: 0.3s;
+}
+
+.deck .card.show {
+    font-size: 33px;
+}
+
+.deck .card.match {
+    cursor: default;
+    background: #02ccba;
+    font-size: 33px;
+    animation-duration: 0.3s;
+    animation-name: bounceIn;
+}
+
+.deck .card.shake {
+  animation-duration: 0.5s;
+  animation-name: shake;
+}
+
+/*
+ * Styles for the Score Panel
+ */
+
+.score-panel {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: left;
+    width: 550px;
+}
+
+.score-panel .stars {
+    margin: 0;
+    padding: 0;
+    width: 25%;
+    display: inline-block;
+    margin: 0 10px 0 0;
+}
+
+.score-panel .stars li {
+    list-style: none;
+    display: inline-block;
+}
+
+.score-panel .stars .one{
+    color: #00E120;
+}
+
+.score-panel .stars .two{
+    color: #00AEE1;
+}
+
+.score-panel .stars .three{
+    color: #EC8FFF;
+    animation: hue-animation 3s infinite;
+}
+
+.score-panel .movesCounter {
+  display: inline-block;
+  width: 25%;
+  color: #00A486;
+  font-weight: 500;
+  margin: 0 auto;
+}
+
+.score-panel .timer {
+  display: inline-block;
+  width: 25%;
+}
+
+.score-panel .restart {
+    float: right;
+    cursor: pointer;
+    font-size: 25px;
+    color: #8AEAFF;
+}
+
+
+/*
+ * Styles for the Modal
+ */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(221,255,242,0.8);
+  overflow: auto;
+}
+
+.modal .modal-content {
+  background-color: #F9F9F9;
+  width: 50%;
+  margin: 5% auto;
+  padding: 1% 6% 6%;
+  text-align: center;
+}
+
+.modal .icon {
+  width: 250px;
+  margin: 0 auto;
+}
+
+.modal .icon .checkmark {
+  width: 100%;
+  animation: hue-animation 5s infinite;
+}
+
+.modal .end-msg {
+  color: #FF4B71;
+  font-weight: 600;
+  font-size: 1.5em;
+  text-shadow: 2px 2px 9px  rgba(204, 204, 204, 0.7);
+}
+
+.modal .stats {
+  color: #1ADD86;
+  font-size: 1em;
+}
+
+.modal #ok,
+.modal #play-again {
+  cursor: pointer;
+  display: flex;
+  flex-wrap: nowrap;
+  width: 10em;
+  justify-content: center;
+  margin: 10px auto;
+  border: none;
+  background: #E0FFC1;
+  padding: 1em 2em;
+  color: #417A5A;
+  font-weight: 600;
+  box-shadow: 0px 0px 10px 0px rgba(155,250,223,0.8);
+}
+
+.modal #ok:hover,
+.modal #play-again:hover {
+  background-color: #DFFFB3;
+  color: #FF661F;
+  border: none;
+}
+
+.modal #ok:focus,
+.modal #play-again:focus {
+  outline: 0;
+}
+
+
+/*
+ * Animations
+*/
+@keyframes bounceIn {
+  from,
+  20%,
+  40%,
+  60%,
+  80%,
+  to {
+    animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+  }
+
+  0% {
+    opacity: 0;
+    transform: scale3d(0.3, 0.3, 0.3);
+  }
+
+  20% {
+    transform: scale3d(1.1, 1.1, 1.1);
+  }
+
+  40% {
+    transform: scale3d(0.9, 0.9, 0.9);
+  }
+
+  60% {
+    opacity: 1;
+    transform: scale3d(1.03, 1.03, 1.03);
+  }
+
+  80% {
+    transform: scale3d(0.97, 0.97, 0.97);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale3d(1, 1, 1);
+  }
+}
+
+@keyframes hue-animation {
+  0% {
+    filter: hue-rotate(80deg);
+  }
+  20% {
+    filter: hue-rotate(150deg);
+  }
+  40% {
+    filter: hue-rotate(210deg);
+  }
+  60% {
+    filter: hue-rotate(180deg);
+  }
+  60% {
+    filter: hue-rotate(90deg);
+  }
+  60% {
+    filter: hue-rotate(50deg);
+  }
+}
+
+@keyframes shake {
+  from,
+  to {
+    transform: translate3d(0, 0, 0);
+  }
+
+  10%,
+  30%,
+  50%,
+  70%,
+  90% {
+    transform: translate3d(-10px, 0, 0);
+  }
+
+  20%,
+  40%,
+  60%,
+  80% {
+    transform: translate3d(10px, 0, 0);
+  }
+}
+
+@keyframes zoomOut {
+  from {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0;
+    transform: scale3d(0.3, 0.3, 0.3);
+  }
+
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+.zoomOut {
+  animation-duration: 1s;
+  animation-name: zoomOut;
+  opacity: 0;
+}
+
+
+
+
+/*
+ *
+ * Responsive
+ *
+*/
+
+/* Android phones and iphones */
+@media screen and (max-width: 480px) {
+  body {
+    overflow: auto;
+  }
+  h1 {
+    margin-bottom: 15%;
+  }
+  .deck {
+    width: 80%;
+    min-height: 400px;
+    margin: 0;
+    padding: 20px;
+  }
+  .deck .card {
+    width: 23%;
+    height: 60px;
+  }
+  .deck .card.show {
+    font-size: 26px;
+  }
+  .score-panel {
+    width: 75%;
+  }
+  .modal {
+    width: 100%;
+  }
+  .modal .modal-content {
+    width: 100%;
+    height: 90%;
+  }
+}
+
+/* Small tablets */
+@media screen and (min-width: 481px) and (max-width: 600px){
+  h1 {
+    margin-bottom: 15%;
+  }
+  .score-panel {
+    width: 75%;
+    font-size: 1em;
+
+  }
+  .deck {
+    width: 80%;
+    min-height: 400px;
+    margin: 0;
+    padding: 6%;
+  }
+  .deck .card {
+    width: 21%;
+    height: 70px;
+  }
+  .deck .card.show {
+    font-size: 29px;
+  }
+  .modal .modal-content {
+    width: 100%;
+    height: 90%;
+  }
+}
+
+/* Big tablets and normal ipads */
+@media screen and (min-width: 601px) and (max-width: 768px){
+  h1 {
+    margin-bottom: 15%;
+  }
+  .score-panel {
+    width: 75%;
+    font-size: 1em;
+  }
+  .deck {
+    width: 80%;
+    min-height: 550px;
+    margin: 0;
+    padding: 6%;
+  }
+  .deck .card {
+    width: 21%;
+    height: 100px;
+  }
+  .deck .card.show {
+    font-size: 29px;
+  }
+  .modal .modal-content {
+    width: 100%;
+    height: 90%;
+  }
+}
