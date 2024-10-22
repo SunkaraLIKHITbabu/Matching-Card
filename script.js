@@ -24,25 +24,11 @@ let stars = document.querySelector(".stars").getElementsByTagName("li");
 let starCount = 3;
 let statMsg = document.querySelector('.stats');
 
-/*
-* set up the event listener for a card. If a card is clicked:
-*  - display the card's symbol (put this functionality in another function that you call from this one)
-*  - add the card to a *list* of "open" cards (put this functionality in another function that you call from this one)
-*  - if the list already has another card, check to see if the two cards match
-*    + if the cards do match, lock the cards in the open position (put this functionality in another function that you call from this one)
-*    + if the cards do not match, remove the cards from the list and hide the card's symbol (put this functionality in another function that you call from this one)
-*    + increment the move counter and display it on the page (put this functionality in another function that you call from this one)
-*    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
-*/
 
 
 setDeck();
 
-/**
-* Shuffle cards on deck and display face down
-* call to initialize moves at move-counter on webpage
-* call to start the game
-*/
+
 function setDeck() {
  console.log("shuffle");
  shuffledCards = shuffle(cards);
@@ -60,11 +46,7 @@ function setDeck() {
 }
 
 
-/**
- * showFirst - shows all the cards
- *
- * @param  card shuffled card list
- */
+
 function showFirst() {
   console.log("show");
   for(let i = 0; i < shuffledCards.length; i++) {
@@ -73,11 +55,7 @@ function showFirst() {
    
 }
 
-/**
- * hideCards - hides all the cards
- *
- * @param  card shuffled card list
- */
+
 function hideCards() {
   console.log("hide");
   for(let i = 0; i < shuffledCards.length; i++) {
@@ -86,17 +64,12 @@ function hideCards() {
 }
 
 
-/**
- * Sets move counter to current moves done
- */
+
 function setMoves() {
   movesCounter.textContent = moves;
 }
 
 
-/**
-* Game starts when a card is clicked
-*/
 
 function startGame() {
  for(let i = 0; i < cards.length; i++) {
@@ -105,14 +78,6 @@ function startGame() {
 }
 
 
-/**
-* Shows card-symbol at click
-* Adds card to openCards list
-* If it's first card - start timer
-* If there are 2 cards on list - call to compare symbols
-* If all cards are matched, call to end game
-* @param  {type} event clicked card
-*/
 
 function flipCardUp(event) {
  event.target.classList.remove('shake');
@@ -136,15 +101,7 @@ function flipCardUp(event) {
 }
 
 
-/**
-* Checks the symbol of current and previous cards from list
-* If match - call to change card style
-* If not a match - call to flip card down
-* Afterwards, call to increment moves and check star rating-status
-* Reset openCards list
-* @param  {type} prev 1st card on list
-* @param  {type} curr 2nd card of list
-*/
+
 function checkMatch(prev,curr) {
   if(prev.innerHTML === curr.innerHTML)  {
         isMatch(prev,curr);
@@ -160,12 +117,7 @@ function checkMatch(prev,curr) {
 
 
 
-   /**
-    * Lock card in open position and change styles
-    * Increment match number
- * @param  {type} prev 1st card on list
- * @param  {type} curr 2nd card of list
-    */
+   
    function isMatch(prev,curr) {
        prev.classList.add('match');
   curr.classList.add('match');
@@ -174,11 +126,7 @@ function checkMatch(prev,curr) {
 
 
 
-   /**
-    * Flip card back down and add style 	 *
- * @param  {type} prev 1st card on list
- * @param  {type} curr 2nd card of list
-    */
+   
    function notMatch(prev,curr) {
        setTimeout(function () {
     prev.classList.add('shake');
@@ -189,21 +137,14 @@ function checkMatch(prev,curr) {
    }
 
 
-/**
- * Increment moves by 1
- */
+
 function incrementMoves() {
   moves++;
   setMoves();
 }
 
 
-/**
- * Determine the star rating based on moves made
- * For less than 12 moves - star is 3
- * For more than 12 moves - star is 2
- * For more than 22 moves - star is 1
- */
+
 function starRating() {
   if(moves > 16) {
     stars[2].classList.add('zoomOut');
@@ -219,39 +160,25 @@ function starRating() {
 }
 
 
-/**
-* Add currently clicked card to openCards list
-* @param  {type} c clicked card
-*/
+
 function addToOpenCards(c) {
  openCards.push(c);
 }
 
 
-/**
-* Shows card symbol
-* @param  {type} event clicked card
-*/
+
 function showCard(event) {
  event.target.classList.add('open','show');
 }
 
 
-/**
-* Start the timer
-* Store timer in a temporary variable
-*/
+
 function startTimer() {
  timer = setInterval(buildTimer,1000);
 }
 
 
-/**
-* Pre-increment seconds on every time function is called
-* Calculate minute and second and store in variables
-* Format time in 00:00 and set it in variable
-* Show final formatted time to time-counter on webpage
-*/
+
 function buildTimer() {
  ++sec;
  min = Math.floor(sec / 60);
@@ -262,13 +189,7 @@ function buildTimer() {
 }
 
 
-/**
-* Pad the time in 00 format
-* Convert time value to string
-* If digit is less than 2, add 0 infront
-* @param  {type} value time value
-* @return {type} string expression of time value
-*/
+
 function pad(value) {
  var string = value + "";
  if(string.length < 2) {
@@ -278,10 +199,7 @@ function pad(value) {
 }
 
 
-/**
- * Stops timer from running
- * Clears minute,second, and time string
- */
+
 function stopTimer() {
   clearInterval(timer);
   sec = 0;
@@ -290,30 +208,20 @@ function stopTimer() {
 }
 
 
-/**
- * Creates statistic text and sets to modalMsg
- */
+
 function buildModalMsg() {
   modalMsg = "<p>You made " + moves + " moves in " + min + " minutes " + sec + " seconds!</p>" + "<p>You Received " + starCount + " star</p>";
 }
 
 
-/**
- * Creates paragraph element
- * Calls to set statistic text to paragraph
- * Add the paragraph below end-greeting and above buttons
- */
+
 function buildModal() {
   statMsg.innerHTML = '';
   statMsg.innerHTML = modalMsg ;
 }
 
 
-/**
- * Display modal
- * Clicking outside the modal box closes modal
- * Call to set fuctions to modal buttons
- */
+
 function showModal() {
   buildModal();
 
@@ -328,10 +236,7 @@ function showModal() {
 }
 
 
-/**
- * Clicking on "OK" closes modal
- * Clicking on "Play Again" restarts game
- */
+
 function runClick() {
   document.querySelector('#ok').onclick= hideModal;
 
@@ -340,26 +245,18 @@ function runClick() {
 }
 
 
-/**
- * Hides modal
- */
+
 function hideModal() {
   modal.style.display = 'none';
 }
 
 
-/**
- * Reset the modal statistic msg on webpage
- */
+
  function resetModalStat() {
    statMsg.innerHTML = '';
  }
 
-/**
- * Call to create statistic text for modal
- * Call to show modal contents
- * Stop timer from running
- */
+
 function endGame() {
   buildModalMsg();
   stopTimer();
@@ -367,13 +264,7 @@ function endGame() {
 }
 
 
-/**
- * Reset everything
- * Event - when "Restart" is clicked
- * Call to hide modal
- * Call to shuffle and set cards to deck
- * Call to reinitialize temporary variables
- */
+
 function resetGame() {
   hideModal();
   resetStaring();
@@ -382,10 +273,7 @@ function resetGame() {
 }
 
 
-/**
- * Reinitialize moves and match numbers
- * Reset move and timer text on webpage
- */
+
 function reInit() {
   movesCounter.innerHTML = '';
   timeCounter.innerHTML = '';
@@ -395,10 +283,7 @@ function reInit() {
 }
 
 
-/**
- * Reset star rating status
- * Display all 3 stars as defualt
- */
+
 function resetStaring() {
   starCount = 3;
   for(let i = 1; i < stars.length; i++) {
@@ -409,10 +294,7 @@ function resetStaring() {
 }
 
 
-/**
- * Restart the game by resetting everything
- * Event - when "Play Again" is clicked
- */
+
 function restartGame() {
   stopTimer();
   resetModalStat();
@@ -421,12 +303,7 @@ function restartGame() {
   setDeck();
 }
 
-/* Given by Udacity
-* Display the cards on the page
-*   - shuffle the list of cards using the provided "shuffle" method below
-*   - loop through each card and create its HTML
-*   - add each card's HTML to the page
-*/
+
 
 // Shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(array) {
